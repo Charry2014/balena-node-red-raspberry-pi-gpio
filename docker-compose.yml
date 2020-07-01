@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  node-red-pigpiod:
+    build: ./node-red-pigpiod
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - 8888:8888
+    expose:
+     - 8888
+
+  node-red:
+    build: ./node-red
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - 1880:1880
+    expose:
+     - 1880
+    depends_on:
+     - node-red-pigpiod

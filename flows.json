@@ -1,0 +1,1 @@
+[{"id":"bcb93dd4.603f3","type":"pi-gpiod out","z":"5cd8a7c5.be5788","name":"","host":"172.17.0.1","port":8888,"pin":"21","set":true,"level":"0","out":"out","sermin":"1000","sermax":"2000","x":100,"y":60,"wires":[]}]
