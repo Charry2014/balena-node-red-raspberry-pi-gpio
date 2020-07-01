@@ -13,7 +13,6 @@ services:
   node-red:
     build: ./node-red
     restart: unless-stopped
-    privileged: true
     ports:
       - 1880:1880
     expose:
