@@ -1,4 +1,6 @@
 version: "2"
+volumes:
+  flow-data:
 
 services:
   node-red-pigpiod:
@@ -12,6 +14,8 @@ services:
 
   node-red:
     build: ./node-red
+    volumes:
+      - 'flow-data:/data'
     restart: unless-stopped
     ports:
       - 1880:1880
