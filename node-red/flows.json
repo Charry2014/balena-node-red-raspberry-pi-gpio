@@ -1,0 +1,465 @@
+[
+    {
+        "id": "3bf626d3.1b648a",
+        "type": "tab",
+        "label": "Garden MQTT",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b0439767.c8e918",
+        "type": "pi-gpiod out",
+        "z": "3bf626d3.1b648a",
+        "name": "CH1 GPIO Pin 29",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "5",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 1070,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e440ae0c.ca44a",
+        "type": "mqtt in",
+        "z": "3bf626d3.1b648a",
+        "name": "",
+        "topic": "tobygarden",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "72799fd6.c4036",
+        "x": 150,
+        "y": 500,
+        "wires": [
+            [
+                "97e96ccd.d6036"
+            ]
+        ]
+    },
+    {
+        "id": "ca1c6b2.3909f98",
+        "type": "mqtt out",
+        "z": "3bf626d3.1b648a",
+        "name": "",
+        "topic": "tobygarden",
+        "qos": "",
+        "retain": "",
+        "broker": "51ab0a30.f784c4",
+        "x": 590,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8bef00c6.90491",
+        "type": "inject",
+        "z": "3bf626d3.1b648a",
+        "name": "Test Input",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "31,1",
+        "payloadType": "str",
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "ca1c6b2.3909f98"
+            ]
+        ]
+    },
+    {
+        "id": "db6710b8.77c38",
+        "type": "switch",
+        "z": "3bf626d3.1b648a",
+        "name": "Channel Switch",
+        "property": "msg.payload.channel",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "29",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "31",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "33",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "36",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "35",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 6,
+        "x": 600,
+        "y": 520,
+        "wires": [
+            [
+                "5b3bfca2.8193e4"
+            ],
+            [
+                "744d0d1d.495374"
+            ],
+            [
+                "9dc26c0d.266aa"
+            ],
+            [
+                "654accd.3edb034"
+            ],
+            [
+                "dc7812da.322c2"
+            ],
+            [
+                "9c3cf254.d5162"
+            ]
+        ]
+    },
+    {
+        "id": "6d63107c.68edd",
+        "type": "debug",
+        "z": "3bf626d3.1b648a",
+        "name": "Channel,Value",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "9c3cf254.d5162",
+        "type": "debug",
+        "z": "3bf626d3.1b648a",
+        "name": "Reject",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "97e96ccd.d6036",
+        "type": "csv",
+        "z": "3bf626d3.1b648a",
+        "name": "Parse CSV",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "channel,value",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 330,
+        "y": 660,
+        "wires": [
+            [
+                "6d63107c.68edd",
+                "db6710b8.77c38"
+            ]
+        ]
+    },
+    {
+        "id": "5b3bfca2.8193e4",
+        "type": "change",
+        "z": "3bf626d3.1b648a",
+        "name": "To number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.value)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 360,
+        "wires": [
+            [
+                "b0439767.c8e918"
+            ]
+        ]
+    },
+    {
+        "id": "a1285cdc.542d3",
+        "type": "pi-gpiod out",
+        "z": "3bf626d3.1b648a",
+        "name": "CH2 GPIO Pin 31",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "6",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 1070,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "744d0d1d.495374",
+        "type": "change",
+        "z": "3bf626d3.1b648a",
+        "name": "To number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.value)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 420,
+        "wires": [
+            [
+                "a1285cdc.542d3"
+            ]
+        ]
+    },
+    {
+        "id": "efed3a75.2014f8",
+        "type": "pi-gpiod out",
+        "z": "3bf626d3.1b648a",
+        "name": "CH3 GPIO Pin 33",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "13",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 1070,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "9dc26c0d.266aa",
+        "type": "change",
+        "z": "3bf626d3.1b648a",
+        "name": "To number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.value)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 480,
+        "wires": [
+            [
+                "efed3a75.2014f8"
+            ]
+        ]
+    },
+    {
+        "id": "fdb4671f.385c38",
+        "type": "pi-gpiod out",
+        "z": "3bf626d3.1b648a",
+        "name": "CH4 GPIO Pin 36",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "16",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 1070,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "654accd.3edb034",
+        "type": "change",
+        "z": "3bf626d3.1b648a",
+        "name": "To number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.value)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 540,
+        "wires": [
+            [
+                "fdb4671f.385c38"
+            ]
+        ]
+    },
+    {
+        "id": "b72bb499.ded9b8",
+        "type": "pi-gpiod out",
+        "z": "3bf626d3.1b648a",
+        "name": "CH5 GPIO Pin 35",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "19",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 1070,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "dc7812da.322c2",
+        "type": "change",
+        "z": "3bf626d3.1b648a",
+        "name": "To number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.value)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 600,
+        "wires": [
+            [
+                "b72bb499.ded9b8"
+            ]
+        ]
+    },
+    {
+        "id": "72799fd6.c4036",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "lesmqtt.dyndns.biz",
+        "port": "8883",
+        "tls": "52540ae3.bac9e4",
+        "clientid": "",
+        "usetls": true,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "51ab0a30.f784c4",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "AWS",
+        "broker": "lesmqtt.dyndns.biz",
+        "port": "8883",
+        "tls": "52540ae3.bac9e4",
+        "clientid": "",
+        "usetls": true,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "52540ae3.bac9e4",
+        "type": "tls-config",
+        "z": "",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true
+    }
+]
