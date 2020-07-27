@@ -35,6 +35,7 @@ CMD sleep 1 && /usr/local/bin/pigpiod -g && sleep 1 && /usr/local/bin/pigs w 5 0
 
 # Can't get this to work, it just gets stuck starting up
 #COPY startup.sh /root/startup.sh
+#RUN chmod +x /root/startup.sh
 #ENTRYPOINT ["/root/startup.sh"]
 #RUN killall pigpiod || echo "pigpiod Process was not running."
 #RUN rm -f /var/run/pigpio.pid
