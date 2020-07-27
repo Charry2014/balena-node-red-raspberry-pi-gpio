@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  app:
+    image: swarmpit/swarmpit:latest
+    environment:
+      - SWARMPIT_DB=http://db:5984
+      - SWARMPIT_INFLUXDB=http://influxdb:8086
+    ports:
+      - 888:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - db
+      - influxdb
+  db:
+    image: couchdb:2.3.0
+  influxdb:
+    image: influxdb:1.7
+  agent:
+     image: swarmpit/agent:latest
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock:ro
