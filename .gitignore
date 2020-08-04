@@ -1,2 +1,4 @@
 .DS_Store
 *.log
+scratch/*
+node-red-local/*

@@ -2,6 +2,8 @@ version: "2"
 volumes:
   flow-data:
 
+
+
 services:
   node-red-pigpiod:
     build: ./node-red-pigpiod
@@ -11,6 +13,10 @@ services:
       - 8888:8888
     expose:
      - 8888
+    labels:
+      io.balena.features.supervisor-api: '1'
+      io.balena.features.balena-api: '1'
+      io.balena.features.balena-socket: '1'
 
   node-red:
     build: ./node-red
@@ -23,3 +29,7 @@ services:
      - 1880
     depends_on:
      - node-red-pigpiod
+    labels:
+      io.balena.features.supervisor-api: '1'
+      io.balena.features.balena-api: '1'
+      io.balena.features.balena-socket: '1'

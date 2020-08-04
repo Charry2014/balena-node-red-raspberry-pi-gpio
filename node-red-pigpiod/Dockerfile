@@ -1,5 +1,5 @@
 # pigpiod
-FROM alpine 
+FROM balenalib/raspberrypi4-64-alpine:latest
 
 STOPSIGNAL 9
   
