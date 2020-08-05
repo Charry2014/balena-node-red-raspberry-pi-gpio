@@ -20,4 +20,4 @@ EXPOSE 8888
 # This works
 COPY startup.sh /root/startup.sh
 RUN chmod +x /root/startup.sh
-CMD ["/bin/bash", "/root/startup.sh"]
+CMD ["/root/startup.sh"]

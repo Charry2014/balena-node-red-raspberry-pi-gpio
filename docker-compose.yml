@@ -1,7 +1,7 @@
 version: "2"
 volumes:
   flow-data:
-
+  log-data:
 
 
 services:
@@ -13,10 +13,8 @@ services:
       - 8888:8888
     expose:
      - 8888
-    labels:
-      io.balena.features.supervisor-api: '1'
-      io.balena.features.balena-api: '1'
-      io.balena.features.balena-socket: '1'
+    depends_on:
+     - logspooler
 
   node-red:
     build: ./node-red
@@ -29,6 +27,29 @@ services:
      - 1880
     depends_on:
      - node-red-pigpiod
+     - logspooler
+
+  logagent: 
+    image: 'sematext/logagent:latest' 
+    environment: 
+      - LOGS_TOKEN=big_secret_here
+      - REGION=US 
+      - LOG_GLOB=/data/logs/node.log
+    cap_add: 
+      - SYS_ADMIN  
+    restart: always 
+    volumes: 
+      - 'log-data:/data/logs' 
+
+  logspooler: 
+    build: ./logspooler 
+    environment: 
+      - LOG_GLOB=/data/logs/node.log
+    restart: always 
+    depends_on:
+     - logagent
+    volumes: 
+      - 'log-data:/data/logs' 
     labels:
       io.balena.features.supervisor-api: '1'
       io.balena.features.balena-api: '1'

@@ -34,4 +34,4 @@ RUN for key in \
 WORKDIR /data/.node-red
 RUN npm install -g --unsafe-perm node-red node-red-node-pi-gpiod
 COPY . /data/.node-red
-CMD node-red --userDir /data/.node-red --define logging.console.level=debug flows.json
+CMD node-red --userDir /data/.node-red --define logging.console.level=info flows.json

@@ -2,3 +2,4 @@
 *.log
 scratch/*
 node-red-local/*
+.balena/*
