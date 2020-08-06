@@ -17,6 +17,8 @@ RUN apk --update --no-cache add --virtual build-dependencies build-base && \
 
 EXPOSE 8888
 
+HEALTHCHECK --interval=1m --timeout=10s CMD ps -ef | grep -v grep | grep -e pigpiod || exit 1
+
 # This works
 COPY startup.sh /root/startup.sh
 RUN chmod +x /root/startup.sh
