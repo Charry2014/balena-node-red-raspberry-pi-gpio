@@ -25,3 +25,14 @@ Ties everything together and uses MQTT to test and control the Pi GPIO pins. The
 Note that there are two problems after rebooting or power cycle - 
 * The gpiod container sometimes does not restart cleanly - using the Balena 'Restart' seems to fix this
 * Node Red gives a dialog about “The flows on the server have been updated” which they have not been. It seems to be a bug somewhere related to the use of the node-red-node-pi-gpiod nodes. See my question here - https://discourse.nodered.org/t/the-flows-on-the-server-have-been-updated-with-pi-gpiod-nodes/29827
+
+
+## Log Spooler
+
+The Log Spooler container is responsible for accessing the container logs and device information through the Balena Supervisor API and spooling these into a log file. 
+
+## Logagent from Sematext
+
+See ./docker-compose.yml and note that the Dockerfile in this project is currently not used, rather the image provided by Sematext. The only configuration necessary is the LOG_GLOB variable and voila it (mostly) works. See the open issue which has been forwarded to Sematext for investigation.
+
+The configuration necessary on Sematext is to sign-up for a free account, extract your LOGS_TOKEN for your application and paste it into docker-compose.yml. The rest should happen like magic.

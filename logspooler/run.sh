@@ -10,6 +10,9 @@ touch ${LOG_FILE}
 DEVICE_DATA=$(curl -X GET --silent --header "Content-Type:application/json" \
     "$BALENA_SUPERVISOR_ADDRESS/v1/device?apikey=$BALENA_SUPERVISOR_API_KEY")
 DEVICE_IP=$(/usr/bin/jq '.ip_address' <<<"${DEVICE_DATA}")
+if [[ -z "$DEVICE_IP" ]]; then
+  DEVICE_IP="??.??.??.??"
+fi
 
 # Tail the logs from the Balena supervisor and spool them into the log file, embellished with useful device information
 {

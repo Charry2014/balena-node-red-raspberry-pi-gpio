@@ -1,7 +1,7 @@
 FROM balenalib/raspberrypi4-64-alpine:3.12-build
 
 RUN \
-  apk add --no-cache --update bash tini && \
+  apk add --no-cache --update bash tini jq && \
   rm -rf /var/cache/apk/*
 
 # RUN \ 
