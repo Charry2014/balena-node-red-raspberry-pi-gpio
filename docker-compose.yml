@@ -32,7 +32,7 @@ services:
   logagent: 
     image: 'sematext/logagent:latest' 
     environment: 
-      - LOGS_TOKEN=big_secret_here
+      - LOGS_TOKEN=cf83a774-846f-4de1-8367-2c2722d7a8a4
       - REGION=US 
       - LOG_GLOB=/data/logs/node.log
     cap_add: 

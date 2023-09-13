@@ -1,22 +1,43 @@
 [
     {
-        "id": "e971d0b3.233c1",
+        "id": "59d62249.6b8dfc",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Initialisation",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "cf296349.6fb1b",
+        "id": "249331bf.914bce",
         "type": "tab",
-        "label": "Garden MQTT",
+        "label": "Gate Control",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "9d7b7f7f.f540f",
+        "id": "c3ddfb9d.84aaf8",
         "type": "tab",
-        "label": "Test & Validate",
+        "label": "Watering",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "27234b31.023e34",
+        "type": "tab",
+        "label": "Lights - Back & Side",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "506372df.a86acc",
+        "type": "tab",
+        "label": "Status",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "9e88753c.21d0f8",
+        "type": "tab",
+        "label": "Fountain",
         "disabled": false,
         "info": ""
     },
@@ -24,8 +45,8 @@
         "id": "4e8b99be.36cba8",
         "type": "mqtt-broker",
         "z": "",
-        "name": "",
-        "broker": "lesmqtt.dyndns.biz",
+        "name": "Socket State",
+        "broker": "lesmqtt.duckdns.org",
         "port": "8883",
         "tls": "dc9c5c9a.c9023",
         "clientid": "",
@@ -78,368 +99,130 @@
         "keyname": "",
         "caname": "",
         "servername": "",
-        "verifyservercert": true
+        "verifyservercert": false
     },
     {
-        "id": "4cbcdc9f.7ec9e4",
-        "type": "pi-gpiod out",
-        "z": "cf296349.6fb1b",
-        "name": "CH1 GPIO Pin 29",
-        "host": "172.17.0.1",
-        "port": 8888,
-        "pin": "5",
-        "set": true,
-        "level": "0",
-        "out": "out",
-        "sermin": "1000",
-        "sermax": "2000",
-        "x": 1070,
+        "id": "d2b0d739.abd328",
+        "type": "trigger",
+        "z": "249331bf.914bce",
+        "name": "Gate Release Delay",
+        "op1": "0",
+        "op2": "1",
+        "op1type": "num",
+        "op2type": "num",
+        "duration": "6",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 490,
         "y": 360,
-        "wires": []
-    },
-    {
-        "id": "aac41e76.1ee8c",
-        "type": "mqtt in",
-        "z": "cf296349.6fb1b",
-        "name": "",
-        "topic": "tobygarden",
-        "qos": "2",
-        "datatype": "auto",
-        "broker": "4e8b99be.36cba8",
-        "x": 150,
-        "y": 500,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "36628bd6.37d384",
-        "type": "switch",
-        "z": "cf296349.6fb1b",
-        "name": "Channel Switch",
-        "property": "msg.payload.channel",
-        "propertyType": "jsonata",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "29",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "31",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "33",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "36",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "35",
-                "vt": "str"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "repair": false,
-        "outputs": 6,
-        "x": 600,
-        "y": 520,
         "wires": [
             [
-                "960afcbb.87fd8"
-            ],
-            [
-                "eacdf17f.b07b5"
-            ],
-            [
-                "31bddede.021062"
-            ],
-            [
-                "1cdf8fea.31877"
-            ],
-            [
-                "5fb073dd.c7dc3c"
-            ],
-            [
-                "757871bf.0e17e"
+                "9610cf0e.e5504",
+                "c57980e1.0f2bb",
+                "78fdf023.aa6bd"
             ]
         ]
     },
     {
-        "id": "9c5b6778.ce5988",
+        "id": "4842ad0.6c3dc54",
+        "type": "change",
+        "z": "249331bf.914bce",
+        "name": "Invert 1 & 0",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "num",
+                "to": "1",
+                "tot": "num"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "num",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "d2b0d739.abd328"
+            ]
+        ]
+    },
+    {
+        "id": "a1541385.da80f",
+        "type": "pi-gpiod in",
+        "z": "249331bf.914bce",
+        "name": "GPIO 18 Pin 12 - Gate Switch Input",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "18",
+        "intype": "PUD_UP",
+        "debounce": "25",
+        "read": true,
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "ba928cb6.68c0b",
+                "4842ad0.6c3dc54"
+            ]
+        ]
+    },
+    {
+        "id": "c57980e1.0f2bb",
+        "type": "pi-gpiod out",
+        "z": "249331bf.914bce",
+        "name": "CH6 GPIO Pin 38 - Gate Release",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "20",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 860,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "9610cf0e.e5504",
         "type": "debug",
-        "z": "cf296349.6fb1b",
-        "name": "Channel,Value",
+        "z": "249331bf.914bce",
+        "name": "Gate Lock Release",
         "active": true,
         "tosidebar": true,
-        "console": false,
+        "console": true,
         "tostatus": false,
         "complete": "payload",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 600,
-        "y": 720,
+        "x": 820,
+        "y": 460,
         "wires": []
     },
     {
-        "id": "757871bf.0e17e",
-        "type": "debug",
-        "z": "cf296349.6fb1b",
-        "name": "Reject",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 870,
-        "y": 760,
-        "wires": []
-    },
-    {
-        "id": "befdecaf.fe1fd",
-        "type": "csv",
-        "z": "cf296349.6fb1b",
-        "name": "Parse CSV",
-        "sep": ",",
-        "hdrin": "",
-        "hdrout": "none",
-        "multi": "one",
-        "ret": "\\n",
-        "temp": "channel,value",
-        "skip": "0",
-        "strings": true,
-        "include_empty_strings": "",
-        "include_null_values": "",
-        "x": 330,
-        "y": 660,
-        "wires": [
-            [
-                "9c5b6778.ce5988",
-                "36628bd6.37d384"
-            ]
-        ]
-    },
-    {
-        "id": "960afcbb.87fd8",
-        "type": "change",
-        "z": "cf296349.6fb1b",
-        "name": "To number",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$number(payload.value)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 360,
-        "wires": [
-            [
-                "4cbcdc9f.7ec9e4"
-            ]
-        ]
-    },
-    {
-        "id": "c30a83d8.3804b",
+        "id": "784311b9.5199",
         "type": "pi-gpiod out",
-        "z": "cf296349.6fb1b",
-        "name": "CH2 GPIO Pin 31",
-        "host": "172.17.0.1",
-        "port": 8888,
-        "pin": "6",
-        "set": true,
-        "level": "0",
-        "out": "out",
-        "sermin": "1000",
-        "sermax": "2000",
-        "x": 1070,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "eacdf17f.b07b5",
-        "type": "change",
-        "z": "cf296349.6fb1b",
-        "name": "To number",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$number(payload.value)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 420,
-        "wires": [
-            [
-                "c30a83d8.3804b"
-            ]
-        ]
-    },
-    {
-        "id": "b5e9e738.a718a8",
-        "type": "pi-gpiod out",
-        "z": "cf296349.6fb1b",
-        "name": "CH3 GPIO Pin 33",
-        "host": "172.17.0.1",
-        "port": 8888,
-        "pin": "13",
-        "set": true,
-        "level": "0",
-        "out": "out",
-        "sermin": "1000",
-        "sermax": "2000",
-        "x": 1070,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "31bddede.021062",
-        "type": "change",
-        "z": "cf296349.6fb1b",
-        "name": "To number",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$number(payload.value)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 480,
-        "wires": [
-            [
-                "b5e9e738.a718a8"
-            ]
-        ]
-    },
-    {
-        "id": "d9c516bb.4915d8",
-        "type": "pi-gpiod out",
-        "z": "cf296349.6fb1b",
-        "name": "CH4 GPIO Pin 36",
-        "host": "172.17.0.1",
-        "port": 8888,
-        "pin": "16",
-        "set": true,
-        "level": "0",
-        "out": "out",
-        "sermin": "1000",
-        "sermax": "2000",
-        "x": 1070,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "1cdf8fea.31877",
-        "type": "change",
-        "z": "cf296349.6fb1b",
-        "name": "To number",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$number(payload.value)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 540,
-        "wires": [
-            [
-                "d9c516bb.4915d8"
-            ]
-        ]
-    },
-    {
-        "id": "adfc62d2.1f35b",
-        "type": "pi-gpiod out",
-        "z": "cf296349.6fb1b",
-        "name": "CH5 GPIO Pin 35",
-        "host": "172.17.0.1",
-        "port": 8888,
-        "pin": "19",
-        "set": true,
-        "level": "0",
-        "out": "out",
-        "sermin": "1000",
-        "sermax": "2000",
-        "x": 1070,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "5fb073dd.c7dc3c",
-        "type": "change",
-        "z": "cf296349.6fb1b",
-        "name": "To number",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$number(payload.value)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 600,
-        "wires": [
-            [
-                "adfc62d2.1f35b"
-            ]
-        ]
-    },
-    {
-        "id": "ffae5e3a.967f1",
-        "type": "pi-gpiod out",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "CH1 GPIO Pin 29 - LP",
         "host": "172.17.0.1",
         "port": 8888,
@@ -454,9 +237,9 @@
         "wires": []
     },
     {
-        "id": "83cbac23.7d1a3",
+        "id": "fa558283.9c156",
         "type": "pi-gpiod out",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "CH2 GPIO Pin 31 - HP",
         "host": "172.17.0.1",
         "port": 8888,
@@ -471,9 +254,9 @@
         "wires": []
     },
     {
-        "id": "ef5e9f26.8747b",
+        "id": "c5f6ba8f.fada48",
         "type": "pi-gpiod out",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "CH3 GPIO Pin 33 - Top",
         "host": "172.17.0.1",
         "port": 8888,
@@ -488,9 +271,9 @@
         "wires": []
     },
     {
-        "id": "4ea92a45.29b534",
+        "id": "d009666.3a62798",
         "type": "pi-gpiod out",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "CH4 GPIO Pin 36 - Side",
         "host": "172.17.0.1",
         "port": 8888,
@@ -505,9 +288,9 @@
         "wires": []
     },
     {
-        "id": "84825e4b.66f52",
+        "id": "3fe667ee.e07888",
         "type": "pi-gpiod out",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "CH5 GPIO Pin 35 - Bottom",
         "host": "172.17.0.1",
         "port": 8888,
@@ -522,63 +305,27 @@
         "wires": []
     },
     {
-        "id": "188c144f.fc7dcc",
+        "id": "b0344705.f52b98",
         "type": "mqtt in",
-        "z": "e971d0b3.233c1",
-        "name": "",
+        "z": "c3ddfb9d.84aaf8",
+        "name": "Watering Input JSON",
         "topic": "tobygarden",
-        "qos": "2",
+        "qos": "0",
         "datatype": "auto",
         "broker": "4e8b99be.36cba8",
-        "x": 310,
-        "y": 620,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "59fd2a35.2687d4",
-        "type": "mqtt out",
-        "z": "9d7b7f7f.f540f",
-        "name": "",
-        "topic": "tobygarden",
-        "qos": "",
-        "retain": "",
-        "broker": "df4542bd.f0abd",
-        "x": 710,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "377824c8.f3714c",
-        "type": "inject",
-        "z": "9d7b7f7f.f540f",
-        "d": true,
-        "name": "Test Input",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "31,0",
-        "payloadType": "str",
-        "x": 440,
-        "y": 200,
+        "x": 100,
+        "y": 360,
         "wires": [
             [
-                "59fd2a35.2687d4"
+                "ad2cda0b.793e58",
+                "7d58103f.dad5c"
             ]
         ]
     },
     {
-        "id": "2d4c841d.4cf26c",
+        "id": "f8e324ee.69a458",
         "type": "inject",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Run sequence",
         "props": [
             {
@@ -596,18 +343,18 @@
         "topic": "",
         "payload": "[{\"index\":1,\"channel\":31,\"level\":1,\"delay\":2},{\"index\":2,\"channel\":35,\"level\":1,\"delay\":12},{\"index\":3,\"channel\":35,\"level\":0,\"delay\":2},{\"index\":4,\"channel\":36,\"level\":1,\"delay\":12},{\"index\":5,\"channel\":36,\"level\":0,\"delay\":2},{\"index\":6,\"channel\":33,\"level\":1,\"delay\":12},{\"index\":7,\"channel\":33,\"level\":0,\"delay\":2},{\"index\":8,\"channel\":31,\"level\":0,\"delay\":2}]",
         "payloadType": "json",
-        "x": 80,
-        "y": 300,
+        "x": 140,
+        "y": 120,
         "wires": [
             [
-                "d2458496.314588"
+                "6e82d601.b16308"
             ]
         ]
     },
     {
-        "id": "d2458496.314588",
+        "id": "bcda087.2a00cf8",
         "type": "function",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "sendNodeAndWait",
         "func": "var i = 0;\n\nsendNodeAndWait()\n\nfunction sendNodeAndWait() {\n    if (i == msg.payload.length) { return null; }\n    node.send({payload:msg.payload[i]});\n    setTimeout(sendNodeAndWait, msg.payload[i].delay * 1000);\n    i += 1;\n}\n\nreturn null;",
         "outputs": 1,
@@ -618,14 +365,14 @@
         "y": 360,
         "wires": [
             [
-                "cf5bbe91.68daf"
+                "a41405d0.d6f0d8"
             ]
         ]
     },
     {
-        "id": "94776ae5.d37c88",
+        "id": "c2a31263.593c2",
         "type": "debug",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Test",
         "active": true,
         "tosidebar": true,
@@ -635,14 +382,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 810,
-        "y": 180,
+        "x": 830,
+        "y": 120,
         "wires": []
     },
     {
-        "id": "42c1e1b9.acb9d",
+        "id": "d0c12433.8f2378",
         "type": "debug",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Errors",
         "active": true,
         "tosidebar": true,
@@ -657,9 +404,9 @@
         "wires": []
     },
     {
-        "id": "e777643e.91fde8",
+        "id": "b1209346.d4379",
         "type": "catch",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "",
         "scope": null,
         "uncaught": false,
@@ -667,14 +414,14 @@
         "y": 740,
         "wires": [
             [
-                "42c1e1b9.acb9d"
+                "d0c12433.8f2378"
             ]
         ]
     },
     {
-        "id": "8b16d1d7.7b21e",
+        "id": "8a26a1d8.04265",
         "type": "switch",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "GPIO Switch",
         "property": "payload.channel",
         "propertyType": "msg",
@@ -705,39 +452,45 @@
                 "vt": "num"
             },
             {
+                "t": "eq",
+                "v": "38",
+                "vt": "num"
+            },
+            {
                 "t": "else"
             }
         ],
         "checkall": "false",
         "repair": false,
-        "outputs": 6,
+        "outputs": 7,
         "x": 750,
         "y": 480,
         "wires": [
             [
-                "b6b694fd.79a088"
+                "1b4fce17.a76592"
             ],
             [
-                "c6c917a6.18d768"
+                "9a083d42.821ca"
             ],
             [
-                "bb368318.721ac"
+                "c25a7e86.79406"
             ],
             [
-                "5935c0aa.126d8"
+                "96b9ce9f.c16b9"
             ],
             [
-                "e96dda16.f46388"
+                "da906f1d.0d5a3"
             ],
+            [],
             [
-                "42c1e1b9.acb9d"
+                "d0c12433.8f2378"
             ]
         ]
     },
     {
-        "id": "c6c917a6.18d768",
+        "id": "9a083d42.821ca",
         "type": "change",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Set level",
         "rules": [
             {
@@ -757,14 +510,14 @@
         "y": 420,
         "wires": [
             [
-                "83cbac23.7d1a3"
+                "fa558283.9c156"
             ]
         ]
     },
     {
-        "id": "b6b694fd.79a088",
+        "id": "1b4fce17.a76592",
         "type": "change",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Set level",
         "rules": [
             {
@@ -784,14 +537,14 @@
         "y": 360,
         "wires": [
             [
-                "ffae5e3a.967f1"
+                "784311b9.5199"
             ]
         ]
     },
     {
-        "id": "bb368318.721ac",
+        "id": "c25a7e86.79406",
         "type": "change",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Set level",
         "rules": [
             {
@@ -811,14 +564,14 @@
         "y": 480,
         "wires": [
             [
-                "ef5e9f26.8747b"
+                "c5f6ba8f.fada48"
             ]
         ]
     },
     {
-        "id": "5935c0aa.126d8",
+        "id": "96b9ce9f.c16b9",
         "type": "change",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Set level",
         "rules": [
             {
@@ -838,14 +591,14 @@
         "y": 540,
         "wires": [
             [
-                "4ea92a45.29b534"
+                "d009666.3a62798"
             ]
         ]
     },
     {
-        "id": "e96dda16.f46388",
+        "id": "da906f1d.0d5a3",
         "type": "change",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Set level",
         "rules": [
             {
@@ -865,14 +618,14 @@
         "y": 600,
         "wires": [
             [
-                "84825e4b.66f52"
+                "3fe667ee.e07888"
             ]
         ]
     },
     {
-        "id": "cf5bbe91.68daf",
+        "id": "a41405d0.d6f0d8",
         "type": "switch",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "DebugOrLive",
         "property": "debugFlow",
         "propertyType": "flow",
@@ -893,17 +646,17 @@
         "y": 360,
         "wires": [
             [
-                "94776ae5.d37c88"
+                "c2a31263.593c2"
             ],
             [
-                "8b16d1d7.7b21e"
+                "8a26a1d8.04265"
             ]
         ]
     },
     {
-        "id": "70d23d7b.1be324",
+        "id": "961fcbd1.a11d18",
         "type": "inject",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "DebugOrLive",
         "props": [
             {
@@ -915,20 +668,20 @@
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "true",
+        "payload": "false",
         "payloadType": "str",
         "x": 120,
         "y": 60,
         "wires": [
             [
-                "689ef00f.36f7"
+                "38107a14.ff49e6"
             ]
         ]
     },
     {
-        "id": "689ef00f.36f7",
+        "id": "38107a14.ff49e6",
         "type": "change",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "SetDebug",
         "rules": [
             {
@@ -948,14 +701,14 @@
         "y": 60,
         "wires": [
             [
-                "d50b82c9.b4ff8"
+                "561d69f0.cf0108"
             ]
         ]
     },
     {
-        "id": "d50b82c9.b4ff8",
+        "id": "561d69f0.cf0108",
         "type": "debug",
-        "z": "e971d0b3.233c1",
+        "z": "c3ddfb9d.84aaf8",
         "name": "Debug Output Only",
         "active": true,
         "tosidebar": true,
@@ -967,6 +720,1202 @@
         "statusType": "auto",
         "x": 560,
         "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6e82d601.b16308",
+        "type": "change",
+        "z": "c3ddfb9d.84aaf8",
+        "name": "Test Sequence",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Run_sequence",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c63d6dfd.7f5f4",
+        "type": "inject",
+        "z": "c3ddfb9d.84aaf8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{ \t\"index\": 1, \t\"channel\": 29, \t\"level\": 1, \t\"delay\": 122 }, { \t\"index\": 2, \t\"channel\": 29, \t\"level\": 0, \t\"delay\": 1 }]",
+        "payloadType": "str",
+        "x": 110,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ad2cda0b.793e58",
+        "type": "json",
+        "z": "c3ddfb9d.84aaf8",
+        "name": "Convert to JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 260,
+        "y": 480,
+        "wires": [
+            [
+                "bcda087.2a00cf8"
+            ]
+        ]
+    },
+    {
+        "id": "66d28041.008fe",
+        "type": "pi-gpiod out",
+        "z": "59d62249.6b8dfc",
+        "name": "CH6 GPIO Pin 38 - Gate",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "20",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 530,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "2286e5bc.57a5ca",
+        "type": "inject",
+        "z": "59d62249.6b8dfc",
+        "name": "Startup Initialisation",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "75760a62.cf2564",
+                "9ebc9192.f9eec",
+                "a1c1e894.744b58",
+                "73edac99.ada664",
+                "34a215cd.e7cf7a"
+            ]
+        ]
+    },
+    {
+        "id": "75760a62.cf2564",
+        "type": "pi-gpiod out",
+        "z": "59d62249.6b8dfc",
+        "name": "CH1 GPIO Pin 29 - LP",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "5",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 520,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "9ebc9192.f9eec",
+        "type": "pi-gpiod out",
+        "z": "59d62249.6b8dfc",
+        "name": "CH2 GPIO Pin 31 - HP",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "6",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 520,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "a1c1e894.744b58",
+        "type": "pi-gpiod out",
+        "z": "59d62249.6b8dfc",
+        "name": "CH3 GPIO Pin 33 - Top",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "13",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 530,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "73edac99.ada664",
+        "type": "pi-gpiod out",
+        "z": "59d62249.6b8dfc",
+        "name": "CH4 GPIO Pin 36 - Side",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "16",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 530,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "34a215cd.e7cf7a",
+        "type": "pi-gpiod out",
+        "z": "59d62249.6b8dfc",
+        "name": "CH5 GPIO Pin 35 - Bottom",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "19",
+        "set": true,
+        "level": "0",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 540,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "de249532.f7faf8",
+        "type": "inject",
+        "z": "59d62249.6b8dfc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 110,
+        "y": 360,
+        "wires": [
+            [
+                "66d28041.008fe"
+            ]
+        ]
+    },
+    {
+        "id": "18f2bd14.41e5e3",
+        "type": "comment",
+        "z": "249331bf.914bce",
+        "name": "Gate Release",
+        "info": "Pin has a pull-up and should be high when inactive\n\n",
+        "x": 90,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "726620d1.a3bc1",
+        "type": "inject",
+        "z": "c3ddfb9d.84aaf8",
+        "name": "Water Everything 2 hours later",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{ \t\"index\": 1, \t\"channel\": 31, \t\"level\": 0, \t\"delay\": 2 }, { \t\"index\": 2, \t\"channel\": 35, \t\"level\": 0, \t\"delay\": 120 }, { \t\"index\": 3, \t\"channel\": 35, \t\"level\": 1, \t\"delay\": 2 }, { \t\"index\": 4, \t\"channel\": 36, \t\"level\": 0, \t\"delay\": 120 }, { \t\"index\": 5, \t\"channel\": 36, \t\"level\": 1, \t\"delay\": 2 }, { \t\"index\": 6, \t\"channel\": 33, \t\"level\": 0, \t\"delay\": 120 }, { \t\"index\": 7, \t\"channel\": 33, \t\"level\": 1, \t\"delay\": 2 }, { \t\"index\": 8, \t\"channel\": 35, \t\"level\": 0, \t\"delay\": 120 }, { \t\"index\": 9, \t\"channel\": 35, \t\"level\": 1, \t\"delay\": 2 }, { \t\"index\": 10, \t\"channel\": 36, \t\"level\": 0, \t\"delay\": 120 }, { \t\"index\": 11, \t\"channel\": 36, \t\"level\": 1, \t\"delay\": 2 }, { \t\"index\": 12, \t\"channel\": 31, \t\"level\": 1, \t\"delay\": 2 }, { \t\"index\": 13, \t\"channel\": 29, \t\"level\": 0, \t\"delay\": 240 }, { \t\"index\": 14, \t\"channel\": 29, \t\"level\": 1, \t\"delay\": 1 }]",
+        "payloadType": "str",
+        "x": 150,
+        "y": 580,
+        "wires": [
+            [
+                "ad2cda0b.793e58"
+            ]
+        ],
+        "info": "The time this actually happens is 2 hours after the time specified."
+    },
+    {
+        "id": "e5f55bce.b81f38",
+        "type": "mqtt in",
+        "z": "249331bf.914bce",
+        "name": "MQTT Gate",
+        "topic": "frontgate/release",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "4e8b99be.36cba8",
+        "x": 90,
+        "y": 360,
+        "wires": [
+            [
+                "d2b0d739.abd328"
+            ]
+        ]
+    },
+    {
+        "id": "9f6925f9.f5c268",
+        "type": "pi-gpiod out",
+        "z": "27234b31.023e34",
+        "name": "IN4 GPIO17 Pin 11 - Wood Shed Plug",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "17",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 790,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "913276f7.3538a8",
+        "type": "inject",
+        "z": "27234b31.023e34",
+        "name": "Turn on 21:00",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 20 * * *",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 200,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "96a949dd.863f18",
+        "type": "inject",
+        "z": "27234b31.023e34",
+        "name": "Turn off at midnight",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 22 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 180,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c2ab8d12.132c5",
+        "type": "inject",
+        "z": "27234b31.023e34",
+        "name": "Auto Off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 220,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4d7543ed.3002dc",
+        "type": "comment",
+        "z": "27234b31.023e34",
+        "name": "Turn on with 0",
+        "info": "The socket is on when written with integer zero",
+        "x": 490,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ec80532a.9df8b",
+        "type": "debug",
+        "z": "27234b31.023e34",
+        "name": "Wood Shed Socket",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "7cbf0054.f7034",
+        "type": "comment",
+        "z": "27234b31.023e34",
+        "name": "Time is 1 hour late",
+        "info": "The event will happen 1 hour later",
+        "x": 170,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ae90d417.041898",
+        "type": "mqtt in",
+        "z": "27234b31.023e34",
+        "name": "MQTT Socket",
+        "topic": "socket",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "4e8b99be.36cba8",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "48098ead.8967b",
+                "4af02286.e41c0c"
+            ]
+        ]
+    },
+    {
+        "id": "48098ead.8967b",
+        "type": "change",
+        "z": "27234b31.023e34",
+        "name": "Process incoming strings",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "0",
+                "tot": "num"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 500,
+        "wires": [
+            [
+                "9f6925f9.f5c268",
+                "ec80532a.9df8b",
+                "d58207bd.75f5a8"
+            ]
+        ]
+    },
+    {
+        "id": "ba928cb6.68c0b",
+        "type": "debug",
+        "z": "249331bf.914bce",
+        "name": "Gate Release Pin",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 190,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "92c11c0.5ce0ae8",
+        "type": "pi-gpiod out",
+        "z": "249331bf.914bce",
+        "name": "CH6 GPIO Pin 38 - Gate",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "20",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 590,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "d50a66b9.4370b8",
+        "type": "inject",
+        "z": "249331bf.914bce",
+        "name": "Initialisation",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "92c11c0.5ce0ae8",
+                "4de71560.ba2f5c"
+            ]
+        ]
+    },
+    {
+        "id": "4de71560.ba2f5c",
+        "type": "pi-gpiod out",
+        "z": "249331bf.914bce",
+        "name": "GPIO 18 - Gate Switch",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "18",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 580,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "53a906b.ebe9ef8",
+        "type": "debug",
+        "z": "506372df.a86acc",
+        "name": "Gate Status Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "41182cb1.78a1b4",
+        "type": "pi-gpiod in",
+        "z": "506372df.a86acc",
+        "name": "Pin 16 - Gate Status",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "23",
+        "intype": "PUD_OFF",
+        "debounce": "100",
+        "read": true,
+        "x": 170,
+        "y": 120,
+        "wires": [
+            [
+                "31cfde17.e9c852"
+            ]
+        ]
+    },
+    {
+        "id": "5eb6fce7.472424",
+        "type": "pi-gpiod in",
+        "z": "506372df.a86acc",
+        "name": "Pin 18 - Garage Status",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "24",
+        "intype": "PUD_UP",
+        "debounce": "25",
+        "read": true,
+        "x": 180,
+        "y": 480,
+        "wires": [
+            [
+                "2e702e54.b7c9a2",
+                "b9d3a9ed.9deed8"
+            ]
+        ]
+    },
+    {
+        "id": "9ed6474d.33edc8",
+        "type": "comment",
+        "z": "506372df.a86acc",
+        "name": "Open is High",
+        "info": "Logic High 3V3 means open\nLogic Low 0V means shut\n\n\nOn the garage the pattern 1-0-1 inside 2 seconds means door is opening.\n0-1-0 means the door is closing.",
+        "x": 90,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "2e702e54.b7c9a2",
+        "type": "trigger",
+        "z": "506372df.a86acc",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "nul",
+        "op2type": "payl",
+        "duration": "1",
+        "extend": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 420,
+        "y": 480,
+        "wires": [
+            [
+                "80cfb807.732018"
+            ]
+        ]
+    },
+    {
+        "id": "aadf9692.74b258",
+        "type": "debug",
+        "z": "506372df.a86acc",
+        "name": "Garage status",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b9d3a9ed.9deed8",
+        "type": "debug",
+        "z": "506372df.a86acc",
+        "name": "Garage door GPIO",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "6e484824.52f0f8",
+        "type": "change",
+        "z": "506372df.a86acc",
+        "name": "Open or Closed",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$$.payload = \"Opening\" ? \"Open\" : \"Closed\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 560,
+        "wires": [
+            [
+                "f64ad5bd.f5ec18",
+                "aadf9692.74b258"
+            ]
+        ]
+    },
+    {
+        "id": "80cfb807.732018",
+        "type": "change",
+        "z": "506372df.a86acc",
+        "name": "Opening or Closing",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$$.payload = 1 ? \"Opening\" : \"Closing\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 480,
+        "wires": [
+            [
+                "aadf9692.74b258",
+                "60ea5897.3ae8a8",
+                "f64ad5bd.f5ec18"
+            ]
+        ]
+    },
+    {
+        "id": "60ea5897.3ae8a8",
+        "type": "trigger",
+        "z": "506372df.a86acc",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "nul",
+        "op2type": "payl",
+        "duration": "25",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 770,
+        "y": 560,
+        "wires": [
+            [
+                "6e484824.52f0f8"
+            ]
+        ]
+    },
+    {
+        "id": "f64ad5bd.f5ec18",
+        "type": "mqtt out",
+        "z": "506372df.a86acc",
+        "name": "Garage Door Status",
+        "topic": "garagedoorstatus",
+        "qos": "1",
+        "retain": "true",
+        "broker": "4e8b99be.36cba8",
+        "x": 1200,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "31cfde17.e9c852",
+        "type": "change",
+        "z": "506372df.a86acc",
+        "name": "Open or Closed",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$$.payload = 1 ? \"Open\" : \"Closed\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 460,
+        "y": 120,
+        "wires": [
+            [
+                "89965d4d.64366",
+                "53a906b.ebe9ef8"
+            ]
+        ]
+    },
+    {
+        "id": "89965d4d.64366",
+        "type": "mqtt out",
+        "z": "506372df.a86acc",
+        "name": "Gate Status",
+        "topic": "gatestatus",
+        "qos": "1",
+        "retain": "true",
+        "broker": "4e8b99be.36cba8",
+        "x": 810,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4af02286.e41c0c",
+        "type": "debug",
+        "z": "27234b31.023e34",
+        "name": "Incoming gate mqtt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "d58207bd.75f5a8",
+        "type": "mqtt out",
+        "z": "27234b31.023e34",
+        "name": "",
+        "topic": "socket/state",
+        "qos": "",
+        "retain": "",
+        "broker": "4e8b99be.36cba8",
+        "x": 710,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "7d58103f.dad5c",
+        "type": "debug",
+        "z": "c3ddfb9d.84aaf8",
+        "name": "Watering Input JSON",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "fcab1806.089618",
+        "type": "pi-gpiod out",
+        "z": "27234b31.023e34",
+        "name": "IN4 GPIO27 Pin 13 - Side lights",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "27",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 790,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "867a725f.beb7d",
+        "type": "debug",
+        "z": "27234b31.023e34",
+        "name": "Side lights",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "7f8e4fb.4b6eeb",
+        "type": "mqtt in",
+        "z": "27234b31.023e34",
+        "name": "MQTT Socket",
+        "topic": "garden/sidelights",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "4e8b99be.36cba8",
+        "x": 150,
+        "y": 920,
+        "wires": [
+            [
+                "28dd7953.9680e6",
+                "cf43b5c0.fd3c28"
+            ]
+        ]
+    },
+    {
+        "id": "28dd7953.9680e6",
+        "type": "change",
+        "z": "27234b31.023e34",
+        "name": "Process incoming strings",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "0",
+                "tot": "num"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 920,
+        "wires": [
+            [
+                "fcab1806.089618",
+                "867a725f.beb7d",
+                "b09402ae.64e78"
+            ]
+        ]
+    },
+    {
+        "id": "cf43b5c0.fd3c28",
+        "type": "debug",
+        "z": "27234b31.023e34",
+        "name": "Side lights mqtt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "b09402ae.64e78",
+        "type": "mqtt out",
+        "z": "27234b31.023e34",
+        "name": "",
+        "topic": "garden/sidelights/state",
+        "qos": "",
+        "retain": "",
+        "broker": "4e8b99be.36cba8",
+        "x": 760,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "fd95bc6f.df9df",
+        "type": "pi-gpiod out",
+        "z": "9e88753c.21d0f8",
+        "name": "IN2 GPIO22 Pin 15 - Fountain",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "22",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 790,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "156156c1.456ca9",
+        "type": "debug",
+        "z": "9e88753c.21d0f8",
+        "name": "Fountain",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "904a7ef1.ed75c",
+        "type": "mqtt in",
+        "z": "9e88753c.21d0f8",
+        "name": "MQTT Socket",
+        "topic": "garden/fountain",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "4e8b99be.36cba8",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "a91e0258.c1b3b",
+                "58f1a2c3.f2942c",
+                "db20b179.6a9b"
+            ]
+        ]
+    },
+    {
+        "id": "a91e0258.c1b3b",
+        "type": "change",
+        "z": "9e88753c.21d0f8",
+        "name": "Process incoming strings",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "0",
+                "tot": "num"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 480,
+        "wires": [
+            [
+                "fd95bc6f.df9df",
+                "156156c1.456ca9",
+                "a7e358ac.711e48"
+            ]
+        ]
+    },
+    {
+        "id": "58f1a2c3.f2942c",
+        "type": "debug",
+        "z": "9e88753c.21d0f8",
+        "name": "Incoming fountain mqtt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "a7e358ac.711e48",
+        "type": "mqtt out",
+        "z": "9e88753c.21d0f8",
+        "name": "",
+        "topic": "garden/fountain/state",
+        "qos": "",
+        "retain": "",
+        "broker": "4e8b99be.36cba8",
+        "x": 760,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "78fdf023.aa6bd",
+        "type": "mqtt out",
+        "z": "249331bf.914bce",
+        "name": "Gate Release Trigger Status",
+        "topic": "frontgate/release/status",
+        "qos": "1",
+        "retain": "true",
+        "broker": "4e8b99be.36cba8",
+        "x": 840,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "db20b179.6a9b",
+        "type": "change",
+        "z": "9e88753c.21d0f8",
+        "name": "Invert 1 & 0",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "0",
+                "fromt": "str",
+                "to": "1",
+                "tot": "num"
+            },
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "1",
+                "fromt": "str",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "2e76734e.4c2c0c"
+            ]
+        ]
+    },
+    {
+        "id": "78109802.d64a88",
+        "type": "pi-gpiod out",
+        "z": "9e88753c.21d0f8",
+        "name": "CH8 GPIO26 Pin 37 - Valve Fountain",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "26",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 570,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "29525666.7f067a",
+        "type": "inject",
+        "z": "9e88753c.21d0f8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "78109802.d64a88"
+            ]
+        ]
+    },
+    {
+        "id": "2e76734e.4c2c0c",
+        "type": "pi-gpiod out",
+        "z": "9e88753c.21d0f8",
+        "name": "CH8 GPIO26 Pin 37 - Valve Fountain",
+        "host": "172.17.0.1",
+        "port": 8888,
+        "pin": "26",
+        "set": true,
+        "level": "1",
+        "out": "out",
+        "sermin": "1000",
+        "sermax": "2000",
+        "x": 810,
+        "y": 300,
         "wires": []
     }
 ]
